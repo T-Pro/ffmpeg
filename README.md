@@ -34,6 +34,11 @@ and in the [wiki](https://trac.ffmpeg.org).
 
 Coding examples are available in the **doc/examples** directory.
 
+### Building
+
+There is a script to build our binary, just run `./build_ffmpeg.sh` on your terminal and 
+wait it build.
+
 ## License
 
 FFmpeg codebase is mainly LGPL-licensed with optional components licensed under

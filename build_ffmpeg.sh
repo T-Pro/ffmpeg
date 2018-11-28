@@ -13,28 +13,33 @@
 #
 
 # Download the lastest FFMPEG version on the current directory.
-if [ ! -d "libavutil" ]; then
-  mkdir ffmpeg
-  cd ffmpeg
-  git clone https://github.com/FFmpeg/FFmpeg.git .
-  cd ..
-  cp -r "ffmpeg/"* "."
-  rm -rf ffmpeg
-fi
+# if [ ! -d "libavutil" ]; then
+#   mkdir ffmpeg
+#   cd ffmpeg
+#   git clone https://github.com/FFmpeg/FFmpeg.git .
+#   cd ..
+#   cp -r "ffmpeg/"* "."
+#   rm -rf ffmpeg
+# fi
 
-# Install or update pkg-config if needed.
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  brew update
-  if brew ls --versions pkg-config > /dev/null; then
-    brew upgrade pkg-config
-  else
-    brew install pkg-config
-  fi
-fi
+# # Install or update pkg-config if needed.
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#   brew update
+#   if brew ls --versions pkg-config > /dev/null; then
+#     brew upgrade pkg-config
+#   else
+#     brew install pkg-config
+#   fi
+# fi
+
+# --extra-cflags='-I/tmp/ffmpeg_build/include -static' \
+# --extra-ldflags='-L/tmp/ffmpeg_build/lib -static' \
+# --extra-libs='-lpthread -lm' \
 
 # Configure FFMPEG
-./configure --disable-everything --prefix=/usr/local --pkg-config-flags=--static --extra-cflags='-I/tmp/ffmpeg_build/include -static' \
---extra-ldflags='-L/tmp/ffmpeg_build/lib -static' --extra-libs='-lpthread -lm' --bindir=/opt/ffmpeg/bin \
+./configure --prefix=/usr/local --pkg-config-flags=--static \
+--bindir=/opt/ffmpeg/bin \
+--disable-everything \
 --disable-gpl --disable-nonfree --disable-network --enable-pthreads \
 --disable-shared --enable-static --disable-debug --disable-ffplay --disable-doc --disable-runtime-cpudetect \
 --disable-network --disable-devices --disable-protocols --enable-protocol=file --enable-protocol=pipe --enable-protocol=tee \
@@ -43,7 +48,8 @@ fi
 --enable-parser=aac,mpegaudio,vorbis,opus \
 --enable-demuxer=mp3,aac,wav,asf,ogg --enable-muxer=mp3 \
 --enable-decoder=mp3,aac,pcm*,wma*,libvorbis,libopus --enable-encoder=libmp3lame \
---enable-small
+--enable-small \
+--enable-filter=loudnorm
 
 # Build the project
 make

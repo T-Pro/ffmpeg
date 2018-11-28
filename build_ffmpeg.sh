@@ -33,14 +33,17 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 # Configure FFMPEG
-./configure --prefix=/usr/local --disable-everything --disable-gpl --disable-nonfree --disable-network --enable-pthreads \
---disable-shared --enable-static --disable-debug --disable-ffplay --disable-doc \
+./configure --prefix=/usr/local --pkg-config-flags=--static --extra-cflags='-I/tmp/ffmpeg_build/include -static' \
+--extra-ldflags='-L/tmp/ffmpeg_build/lib -static' --extra-libs='-lpthread -lm' --bindir=/opt/ffmpeg/bin --disable-everything \
+--disable-gpl --disable-nonfree --disable-network --enable-pthreads \
+--disable-shared --enable-static --disable-debug --disable-ffplay --disable-doc --disable-runtime-cpudetect \
 --disable-network --disable-devices --disable-protocols --enable-protocol=file --enable-protocol=pipe --enable-protocol=tee \
 --enable-swresample --enable-filter=aresample \
 --enable-ffmpeg --enable-libfdk-aac --enable-libmp3lame --enable-libvorbis --enable-libopus \
 --enable-parser=aac,mpegaudio,vorbis,opus \
---enable-demuxer=mp3,aac,wav,ogg --enable-muxer=mp3 \
---enable-decoder=mp3,aac,pcm*,vorbis,libopus --enable-encoder=libmp3lame
+--enable-demuxer=mp3,aac,wav,asf,ogg --enable-muxer=mp3 \
+--enable-decoder=mp3,aac,pcm*,wma*,libvorbis,libopus --enable-encoder=libmp3lame \
+--enable-small
 
 # Build the project
 make
